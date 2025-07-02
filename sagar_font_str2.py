@@ -4,9 +4,17 @@ import io
 import zipfile
 import os
 
+from PIL import ImageFont
+import os
+
 def get_font(size):
-    font_path = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
-    return ImageFont.truetype(font_path, size)
+    font_path = os.path.join(os.path.dirname(__file__), "DejaVuSans-Bold.ttf")
+    try:
+        return ImageFont.truetype(font_path, size)
+    except OSError:
+        print("⚠️ Font file not found. Using default PIL font.")
+        return ImageFont.load_default()
+
 
 def calculate_optimal_font_size(label_width, label_height, sample_text_lines):
     min_size = 8
