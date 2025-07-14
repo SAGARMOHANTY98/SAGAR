@@ -3,18 +3,18 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 import base64
 
-# Custom CSS for sticker theme (UPDATED background image)
+# Custom CSS for sticker theme
 def set_sticker_theme():
     st.markdown("""
     <style>
         /* Main container styling with sticker background */
         .stApp {
-            background-image: url('https://i.imgur.com/2e4yZiJ.jpg');
+            background-image: url('https://img.freepik.com/free-vector/hand-drawn-sticker-collection_23-2149651206.jpg');
             background-size: cover;
             background-attachment: fixed;
-            opacity: 0.95;
+            opacity: 0.9;
         }
-
+        
         /* Form container with sticker-like appearance */
         .sticker-form {
             background-color: rgba(255, 255, 255, 0.9);
@@ -24,7 +24,7 @@ def set_sticker_theme():
             border: 2px dashed #4CAF50;
             margin-bottom: 2rem;
         }
-
+        
         /* Header styling */
         .sticker-header {
             color: #4CAF50;
@@ -34,13 +34,13 @@ def set_sticker_theme():
             font-weight: bold;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
-
+        
         /* Input field styling */
         .stTextInput>div>div>input, .stTextArea>div>textarea {
             border-radius: 8px !important;
             border: 1px solid #4CAF50 !important;
         }
-
+        
         /* Button styling */
         .stButton>button {
             background-color: #4CAF50 !important;
@@ -51,23 +51,23 @@ def set_sticker_theme():
             font-weight: bold !important;
             transition: all 0.3s ease !important;
         }
-
+        
         .stButton>button:hover {
             background-color: #45a049 !important;
             transform: translateY(-2px) !important;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
         }
-
+        
         /* Success message */
         .stAlert {
             border-radius: 10px !important;
         }
-
+        
         /* Download buttons */
         .stDownloadButton>button {
             background-color: #2196F3 !important;
         }
-
+        
         /* Label preview */
         .stImage>img {
             border: 2px solid #4CAF50 !important;
@@ -77,13 +77,10 @@ def set_sticker_theme():
     </style>
     """, unsafe_allow_html=True)
 
-# Load font (FIXED for cloud compatibility)
+# Load font
 def get_font(size):
-    try:
-        return ImageFont.truetype("DejaVuSans-Bold.ttf", size)
-    except OSError:
-        return ImageFont.load_default()  # Fallback if font not found
-
+    font_path = "/System/Library/Fonts/Supplemental/Arial Narrow Bold.ttf"
+    return ImageFont.truetype(font_path, size)
 
 # Calculate optimal font size for a label
 def calculate_optimal_font_size(label_width, label_height, sample_text_lines):
