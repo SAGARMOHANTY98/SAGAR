@@ -79,7 +79,7 @@ def set_sticker_theme():
 
 # Load font
 def get_font(size):
-    font_path = "/System/Library/Fonts/Supplemental/Arial Narrow Bold.ttf"
+    font_path = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
     return ImageFont.truetype(font_path, size)
 
 # Calculate optimal font size for a label
