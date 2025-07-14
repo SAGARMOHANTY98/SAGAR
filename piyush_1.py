@@ -1,29 +1,12 @@
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import io
-import base64
+import os
 
-def set_sticker_theme():
-    st.markdown("""
-    <style>
-        .stApp {
-            background-image: url('https://keralamade.com/wp-content/uploads/2022/10/wilton-weavers-banner.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            opacity: 0.9;
-        }
-        /* rest of your CSS remains unchanged */
-    </style>
-    """, unsafe_allow_html=True)
-
-
+# Load font
 def get_font(size):
-    try:
-        return ImageFont.truetype("DejaVuSans-Bold.ttf", size)
-    except OSError:
-        return ImageFont.load_default()
-
+    font_path = "/System/Library/Fonts/Supplemental/Arial Narrow Bold.ttf"
+    return ImageFont.truetype(font_path, size)
 
 # Calculate optimal font size for a label
 def calculate_optimal_font_size(label_width, label_height, sample_text_lines):
@@ -140,98 +123,33 @@ def generate_invoice_labels(date, invoice_no, supplier, items_data):
 
     return sheets, font_size, sheet_number
 
-def main():
-    # Set page config
-    st.set_page_config(
-        page_title="✨ Invoice Label Generator",
-        page_icon="🏷️",
-        layout="centered",
-        initial_sidebar_state="collapsed"
-    )
-    
-    # Set custom theme
-    set_sticker_theme()
-    
-    # App header
-    st.markdown('<h1 class="sticker-header">🏷️ Invoice Label Generator</h1>', unsafe_allow_html=True)
-    st.markdown("---")
-    
-    # Main form in a sticker container
-    with st.container():
-        st.markdown('<div class="sticker-form">', unsafe_allow_html=True)
-        
-        with st.form("label_form"):
-            # Form columns for better layout
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                date = st.text_input("📅 Date (e.g., 01-07-2024)")
-                invoice_no = st.text_input("📄 Invoice Number (e.g., INV-123)")
-            
-            with col2:
-                supplier = st.text_input("🏢 Supplier Name")
-                num_items = st.number_input("📦 Number of Items", min_value=1, value=1, step=1)
-            
-            # Dynamic item input
-            items_data = {}
-            st.markdown("### 🧾 Item Details")
-            for i in range(1, num_items + 1):
-                pieces = st.number_input(
-                    f"#️⃣ Pieces for Item {i}", 
-                    min_value=1, 
-                    value=1, 
-                    step=1, 
-                    key=f"item_{i}"
-                )
-                items_data[i] = pieces
-            
-            # Generate button with icon
-            submitted = st.form_submit_button("✨ Generate Labels")
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Handle form submission
-    if submitted:
-        if not date or not invoice_no or not supplier:
-            st.error("Please fill in all required fields!")
-        else:
-            with st.spinner("🔄 Generating your labels..."):
-                sheets, font_size, total_sheets = generate_invoice_labels(date, invoice_no, supplier, items_data)
-            
-            # Success message
-            st.success(f"✅ Successfully generated {sum(items_data.values())} labels across {total_sheets} sheet(s)!")
-            st.balloons()
-            
-            # Results section
-            st.markdown("---")
-            st.markdown("## 📋 Results")
-            
-            # Preview section
-            with st.expander("🔍 Preview Settings", expanded=True):
-                preview_col1, preview_col2 = st.columns(2)
-                with preview_col1:
-                    st.metric("Font Size Used", f"{font_size}pt")
-                with preview_col2:
-                    st.metric("Total Labels", sum(items_data.values()))
-            
-            # Display and download sheets
-            for idx, sheet_data in enumerate(sheets):
-                with st.container():
-                    st.markdown(f"### 📄 Sheet {idx+1}")
-                    
-                    # Display the sheet
-                    st.image(sheet_data, use_column_width=True)
-                    
-                    # Download button
-                    st.download_button(
-                        label=f"⬇️ Download Sheet {idx+1}",
-                        data=sheet_data,
-                        file_name=f"Invoice_Labels_Sheet_{idx+1}.png",
-                        mime="image/png",
-                        key=f"download_{idx}"
-                    )
-                
-                st.markdown("---")
+# Streamlit UI
+st.title("📑 Invoice Label Sheet Generator")
 
-if __name__ == "__main__":
-    main()
+with st.form("label_form"):
+    date = st.text_input("Enter Date (e.g., 01-07-2024)")
+    invoice_no = st.text_input("Enter Invoice Number (e.g., INV-123)")
+    supplier = st.text_input("Enter Supplier Name")
+
+    num_items = st.number_input("Number of different items", min_value=1, value=1, step=1)
+    items_data = {}
+    for i in range(1, num_items + 1):
+        pieces = st.number_input(f"Pieces for Item {i}", min_value=1, value=1, step=1, key=f"item_{i}")
+        items_data[i] = pieces
+
+    submitted = st.form_submit_button("Generate Labels")
+
+if submitted:
+    sheets, font_size, total_sheets = generate_invoice_labels(date, invoice_no, supplier, items_data)
+
+    st.success(f"✅ Successfully generated {sum(items_data.values())} labels across {total_sheets} sheet(s)!")
+    st.write(f"Font Size used: **{font_size}pt**")
+
+    for idx, sheet_data in enumerate(sheets):
+        st.image(sheet_data, caption=f"Sheet {idx+1}", use_column_width=True)
+        st.download_button(
+            label=f"📥 Download Sheet {idx+1}",
+            data=sheet_data,
+            file_name=f"Invoice_Labels_Sheet_{idx+1}.png",
+            mime="image/png"
+        )
