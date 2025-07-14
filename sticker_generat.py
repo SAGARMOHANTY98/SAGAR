@@ -3,50 +3,93 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 
 # --------- CSS Styling (No ads, clean look) ---------
-def set_clean_theme():
+def set_wilton_theme():
     st.markdown("""
     <style>
-        .stApp {
-            background-color: #fdfdfd;
-            font-family: 'Segoe UI', sans-serif;
-        }
+    /* Background and general layout */
+    .stApp {
+        background-color: #f9f4ee;
+        background-image: linear-gradient(135deg, #f9f4ee 25%, #f4ede6 25%, #f4ede6 50%, #f9f4ee 50%, #f9f4ee 75%, #f4ede6 75%, #f4ede6);
+        background-size: 20px 20px;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-        .sticker-header {
-            color: #4CAF50;
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: bold;
-        }
+    /* App header */
+    .sticker-header {
+        color: #8B0000;
+        text-align: center;
+        font-size: 2.7rem;
+        margin-bottom: 1.5rem;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px #f1e1d0;
+        letter-spacing: 1px;
+    }
 
-        .sticker-form {
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 2rem;
-            border: 2px dashed #A5D6A7;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-        }
+    /* Form card styling */
+    .sticker-form {
+        background-color: #fff8f1;
+        border-radius: 14px;
+        padding: 2rem;
+        border: 3px double #B22222;
+        box-shadow: 0 4px 15px rgba(139,0,0,0.15);
+        margin-bottom: 2rem;
+    }
 
-        .stButton>button {
-            background-color: #4CAF50 !important;
-            color: white !important;
-            border-radius: 6px;
-            padding: 0.5rem 1.2rem;
-            font-weight: bold;
-        }
+    /* Text input fields */
+    .stTextInput>div>div>input, .stNumberInput input {
+        border: 2px solid #DAA520 !important;
+        border-radius: 8px !important;
+        background-color: #fff;
+        padding: 0.4rem;
+    }
 
-        .stButton>button:hover {
-            background-color: #45A049 !important;
-        }
+    /* Buttons */
+    .stButton>button {
+        background-color: #8B0000 !important;
+        color: white !important;
+        border-radius: 8px !important;
+        padding: 0.6rem 1.2rem !important;
+        font-weight: bold !important;
+        border: 2px solid #B22222 !important;
+        transition: 0.3s ease;
+    }
 
-        .stImage>img {
-            border: 2px solid #A5D6A7;
-            border-radius: 8px;
-            margin-top: 1rem;
-        }
+    .stButton>button:hover {
+        background-color: #A52A2A !important;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+
+    /* Metrics, images, download buttons */
+    .stImage>img {
+        border: 3px solid #DAA520;
+        border-radius: 10px;
+        margin-top: 1rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .stDownloadButton>button {
+        background-color: #003366 !important;
+        color: white !important;
+        font-weight: bold;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .stDownloadButton>button:hover {
+        background-color: #001f4d !important;
+    }
+
+    /* Section titles */
+    h3, h4, h5 {
+        color: #8B0000;
+        border-bottom: 2px dotted #DAA520;
+        padding-bottom: 4px;
+    }
     </style>
     """, unsafe_allow_html=True)
+
 
 # --------- Font Loader ---------
 def get_font(size):
