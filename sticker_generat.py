@@ -2,40 +2,51 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import io
 
-# --------- CSS Styling (No ads, clean look) ---------
+# --------- Wilton Weaver Theme CSS ---------
 def set_wilton_theme():
     st.markdown("""
     <style>
-    /* Background and general layout */
     .stApp {
-        background-color: #f9f4ee;
-        background-image: linear-gradient(135deg, #f9f4ee 25%, #f4ede6 25%, #f4ede6 50%, #f9f4ee 50%, #f9f4ee 75%, #f4ede6 75%, #f4ede6);
-        background-size: 20px 20px;
+        background-color: #fdf5e6;
+        background-image: repeating-linear-gradient(
+            45deg,
+            #f9f4ee,
+            #f9f4ee 10px,
+            #f3e8d8 10px,
+            #f3e8d8 20px
+        );
+        background-size: cover;
         font-family: 'Segoe UI', sans-serif;
     }
 
-    /* App header */
     .sticker-header {
         color: #8B0000;
         text-align: center;
-        font-size: 2.7rem;
-        margin-bottom: 1.5rem;
+        font-size: 2.8rem;
+        margin-bottom: 1.2rem;
         font-weight: bold;
-        text-shadow: 1px 1px 2px #f1e1d0;
+        text-shadow: 1px 1px 2px #e6d3b3;
         letter-spacing: 1px;
     }
 
-    /* Form card styling */
+    .company-subheader {
+        color: #444;
+        text-align: center;
+        font-size: 1.2rem;
+        font-style: italic;
+        margin-top: -10px;
+        margin-bottom: 20px;
+    }
+
     .sticker-form {
-        background-color: #fff8f1;
+        background-color: #fff8f0;
         border-radius: 14px;
         padding: 2rem;
-        border: 3px double #B22222;
-        box-shadow: 0 4px 15px rgba(139,0,0,0.15);
+        border: 3px double #8B0000;
+        box-shadow: 0 4px 12px rgba(139, 0, 0, 0.1);
         margin-bottom: 2rem;
     }
 
-    /* Text input fields */
     .stTextInput>div>div>input, .stNumberInput input {
         border: 2px solid #DAA520 !important;
         border-radius: 8px !important;
@@ -43,7 +54,6 @@ def set_wilton_theme():
         padding: 0.4rem;
     }
 
-    /* Buttons */
     .stButton>button {
         background-color: #8B0000 !important;
         color: white !important;
@@ -60,7 +70,6 @@ def set_wilton_theme():
         box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
-    /* Metrics, images, download buttons */
     .stImage>img {
         border: 3px solid #DAA520;
         border-radius: 10px;
@@ -81,7 +90,6 @@ def set_wilton_theme():
         background-color: #001f4d !important;
     }
 
-    /* Section titles */
     h3, h4, h5 {
         color: #8B0000;
         border-bottom: 2px dotted #DAA520;
@@ -89,7 +97,6 @@ def set_wilton_theme():
     }
     </style>
     """, unsafe_allow_html=True)
-
 
 # --------- Font Loader ---------
 def get_font(size):
@@ -200,10 +207,11 @@ def generate_invoice_labels(date, invoice_no, supplier, items_data):
 
 # --------- Main App ---------
 def main():
-    st.set_page_config(page_title="Invoice Label Generator", page_icon="🏷️", layout="centered")
-    set_clean_theme()
+    st.set_page_config(page_title="Wilton Weaver Labels", page_icon="🧶", layout="centered")
+    set_wilton_theme()
 
-    st.markdown('<h1 class="sticker-header">🏷️ Invoice Label Generator</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="sticker-header">Wilton Weaver</h1>', unsafe_allow_html=True)
+    st.markdown('<div class="company-subheader">Fine Carpet Label Generator • Est. 1984</div>', unsafe_allow_html=True)
     st.markdown("---")
 
     with st.container():
@@ -243,7 +251,7 @@ def main():
                 st.download_button(
                     label=f"⬇️ Download Sheet {idx + 1}",
                     data=sheet_data,
-                    file_name=f"Invoice_Labels_Sheet_{idx + 1}.png",
+                    file_name=f"Wilton_Weaver_Sheet_{idx + 1}.png",
                     mime="image/png",
                     key=f"download_{idx}"
                 )
